@@ -7,21 +7,34 @@ function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
 
-  const userId = null;
-
   // URL의 쿼리 스트링을 변경하는 함수
-  const updateSearch = (userId) => {};
+  const updateSearch = (userId) => {
+    setSearchParams({ userId: userId })
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const { data } = await postsAxios.get('/');
+        setPosts(data);
+      } catch (error) {
+        console.error("포스트를 불러오는데 실패했습니다:", error);
+      }
+    }
+    fetchPosts();
+  }, []);
 
-  const filteredPosts = null;
+  const filteredPosts = posts.filter((post) => {
+    const writerUserId = parseInt(searchParams.get("userId"));
+    return !writerUserId || post.writerUserId === writerUserId;
+  })
 
   return (
     <div>
       <h1>Posting 정보 보기</h1>
       <div>
-        {userId ? (
-          <p>아이디 {userId}님이 쓰신 글</p>
+        {searchParams.get("userId") ? (
+          <p>아이디 {searchParams.get("userId")}님이 쓰신 글</p>
         ) : (
           <p>아래 두 버튼 중 하나를 선택해주세요.</p>
         )}
