@@ -6,9 +6,27 @@ const TestPage = () => {
   const [posts, setPosts] = React.useState([]);
   const [comments, setComments] = React.useState([]);
 
-  const handleGetPostButtonClick = async () => {};
+  const handleGetPostButtonClick = async () => {
+    try {
+      // 불러오기 전 comments 초기화
+      setComments([])
+      const { data } = await postsAxios.get('/');
+      setPosts(data);
+    } catch (error) {
+      console.error("포스트를 불러오는데 실패했습니다:", error);
+    }
+  };
 
-  const handleGetCommentsButtonClick = async () => {};
+  const handleGetCommentsButtonClick = async () => {
+    try {
+      // 불러오기 전 comments 초기화
+      setPosts([])
+      const { data } = await commentsAxios.get('/');
+      setComments(data);
+    } catch (error) {
+      console.error("댓글을 불러오는데 실패했습니다:", error);
+    }
+  };
 
   return (
     <div>
@@ -22,11 +40,16 @@ const TestPage = () => {
       </button>
 
       {posts?.map((post) => (
-        <></>
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.auth}</p>
+        </div>
       ))}
 
       {comments?.map((comment) => (
-        <></>
+        <div key={comment.id}>
+          <p>{comment.body}</p>
+        </div>
       ))}
     </div>
   );
