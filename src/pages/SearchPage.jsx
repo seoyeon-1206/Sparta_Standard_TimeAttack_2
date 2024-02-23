@@ -6,11 +6,22 @@ import postsAxios from "../axios/posts";
 function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
+  //스탠다드
+  const userId = searchParams.get("userId")
 
   // URL의 쿼리 스트링을 변경하는 함수
   const updateSearch = (userId) => {
-    setSearchParams({ userId: userId })
+    setSearchParams({ userId: userId }) //객체가 들어가요
   };
+
+  // 밑에 부분을 이렇게 then으로 바꿔봄
+  useEffect(() => {
+    postsAxios.get("/").then((response) => {
+      setPosts(response.updateSearch)
+    }).catch((error) => {
+      console.log(error)
+    })
+  })
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -25,16 +36,17 @@ function SearchPage() {
   }, []);
 
   const filteredPosts = posts.filter((post) => {
-    const writerUserId = parseInt(searchParams.get("userId"));
-    return !writerUserId || post.writerUserId === writerUserId;
+    post.writerUserId === Number(userId) //파라미터로 붙는건 항상 string이라 number로 바꿔주기
+    //const writerUserId = parseInt(searchParams.get("userId"));
+    //return !writerUserId || post.writerUserId === writerUserId;
   })
 
   return (
     <div>
       <h1>Posting 정보 보기</h1>
       <div>
-        {searchParams.get("userId") ? (
-          <p>아이디 {searchParams.get("userId")}님이 쓰신 글</p>
+        {userId ? (
+          <p>아이디 {userId}님이 쓰신 글</p>
         ) : (
           <p>아래 두 버튼 중 하나를 선택해주세요.</p>
         )}

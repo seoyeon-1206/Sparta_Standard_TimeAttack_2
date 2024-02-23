@@ -9,9 +9,9 @@ const TestPage = () => {
   const handleGetPostButtonClick = async () => {
     try {
       // 불러오기 전 comments 초기화
-      setComments([])
       const { data } = await postsAxios.get('/');
       setPosts(data);
+      setComments([])
     } catch (error) {
       console.error("포스트를 불러오는데 실패했습니다:", error);
     }
@@ -20,9 +20,9 @@ const TestPage = () => {
   const handleGetCommentsButtonClick = async () => {
     try {
       // 불러오기 전 comments 초기화
-      setPosts([])
       const { data } = await commentsAxios.get('/');
       setComments(data);
+      setPosts([])
     } catch (error) {
       console.error("댓글을 불러오는데 실패했습니다:", error);
     }

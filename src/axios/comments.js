@@ -2,22 +2,26 @@ import axios from "axios";
 import { authApi } from "./auth";
 
 const commentsAxios = axios.create({
-    baseURL: 'http://localhost:3001/comments',
+    // 스탠다드 / baseURL 틀렸음.. 이게 오류의 원인인듯
+    baseURL: `${process.env.REACT_APP_API_URL}/comments/`,
     timeout: 1500
 });
 
 commentsAxios.interceptors.request.use(
     async config => {
+        // 스탠다드 /유저가 가지고 있는 토큰이 지금 요청을 보내려고 하는 이 시점에 맞아? -> 이미 auth에서 확인 로직이 있음
         try {
-            const response = await authApi.get('/user');
-            config.headers.Authorization = `Bearer ${response.data.accessToken}`
+            await authApi.get("/users")
+
+            // 성공
+            return config;
+            //config.headers.Authorization = `Bearer ${response.data.accessToken}`
         } catch (error) {
-            console.error("인증 실패", error)
+            return Promise.reject(error);
         }
-        return config;
     },
     error => {
-        return Promise.reject(error);
+        return error;
     }
 );
 

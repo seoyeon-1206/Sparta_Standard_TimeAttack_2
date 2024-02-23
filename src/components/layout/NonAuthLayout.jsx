@@ -7,7 +7,7 @@ const NonAuthLayout = () => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       alert('이미 로그인 상태입니다')
-      return <Navigate to='/' />
+      return <Navigate to='/' replace />
     }
   }, [])
 

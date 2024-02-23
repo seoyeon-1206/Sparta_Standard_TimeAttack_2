@@ -9,7 +9,8 @@ const AuthLayout = () => {
 
     if (!accessToken) {
       alert('로그인이 필요합니다')
-      return <Navigate to='/login' />
+      // 스탠다드 replace : history 제거 
+      return <Navigate to='/login' replace />
     }
   }, [])
 

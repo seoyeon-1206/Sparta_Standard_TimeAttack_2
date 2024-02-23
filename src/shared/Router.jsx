@@ -32,6 +32,8 @@ export default function RouterPage() {
         </Route>
 
         {/* 404 Not Found */}
+        {/* 까먹음 */}
+        <Route path="*" element={<NotFound />} />
         <Route />
       </Routes>
     </Router>
